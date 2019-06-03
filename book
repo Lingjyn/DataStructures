@@ -1,0 +1,636 @@
+# _*_ coding: utf-8 _*_
+'''
+R:
+1.编写 Python 函数 is_multiple(n,m) 用于接收两个整数值 n,m ,若 n 是 m 的倍数，函数返回True，否则返回False。
+'''
+def is_multiple(n,m):
+	if type(n) == int and type(m) == int :
+		if n % m == 0:
+			print ("True")
+		else:	
+			print('False')
+	else:
+		print ("ValueError")
+
+is_multiple(2.1,4)
+
+#简化：
+#	def is_multiple(n,m):
+#		return (print(n % m == 0))
+#	print的作用是将结果打印到控制台，也可以去掉
+
+'''
+2.编写 Python 函数 is_even(k) 用于接收一个整数值 k ,若 k 是偶数，函数返回True，否则返回False，不能使用乘法除法取余操作。
+'''
+def is_even(k):
+	if k > 0:
+		while k > 0:
+			k -= 2
+		if k == 0:
+			print ('True')
+		else:
+			print ('False') 
+	elif k < 0:
+		while k < 0:
+			k += 2
+		if k == 0 :
+			print ('True')
+		else:
+			print ('False') 
+	else:
+		print ('True')
+
+is_even(2)
+is_even(5)
+is_even(-5)
+is_even(-10)
+
+#简化：
+#	def is_even(k):		
+#		k = abs(k)
+#		while k > 1:
+#			k -= 2
+#		return (print(k == 0))
+#	abs()为取绝对值函数
+
+'''
+3.编写 Python 函数 minmax(data) 用于在数的序列中找出最小和最大数，并以一个长度为2的元祖形式返回，不能通过min，max内置函数实现。
+'''
+def minmax(data):
+	Min = Max = data[0]
+	for i in range(1,len(data)):
+		if data[i] < Min:
+			Min = data[i]
+		if data[i] > Max:
+			Max = data[i]
+	print ([Min,Max])
+
+minmax((1,3,4,5,7,19))
+
+#简化：
+#	def minmax(data):
+#		minv = data[0]
+#		maxv = data[0]
+#		for item in data:
+#			if minv > item:
+#				minv = item
+#			if maxv < item:
+#				maxv = item
+#		return minv,maxv
+
+'''
+4.编写 Python 函数，用于接收正整数n，返回1-n 的平方和。
+5.基于 Python 的解析语法和内置函数 sum，写一个单独的命令来计算上题的和。
+'''
+def square(n):		#判断n是否正整数的步骤省略
+	Su = 0
+	Sum = [k*k for k in range(1,n+1)] #省略了for循环的写法
+	for i in range(len(Sum)):
+		Su += Sum[i]
+	print (Su)
+
+square(9)
+
+def square(n):
+	Sum = [k*k for k in range(1,n+1)]
+	result = sum(Sum)
+	print (Sum)
+	print (result)
+
+square(9)
+
+#	def Square(n):
+#		return sum(list(map(lambda x:x**2,range(n+1))))
+#	map()接收一个函数和一个 list，把函数依次作用在 list 的每个元素上，得到一个新的 list 并返回。
+
+'''
+6.编写一个 Python 函数，用于接收 1-n 中所有奇数的平方和。
+7.基于列表解析语法和内置函数，重新计算上题。
+'''
+def square(n):
+	Sum = [k*k for k in range(1,n+1) if k % 2 != 0]
+	result = sum(Sum)
+	print (Sum)
+	print (result)
+square(9)
+
+def Square(n):
+	result = 0
+	for item in range(n+1):
+		if (item % 2 > 0):
+			result += item ** 2
+	return result
+
+def Square(n):
+	return sum(x**2 for x in range(n+1) if (x % 2>0))
+
+'''
+8.Python 允许负整数作为序列的索引值，求负整数k指向的元素s[k]对应的正整数索引j是多少
+'''
+def Index(s,k):
+	if k >= 0:
+		print ('ValueError')
+	for i in range(len(s)):
+		if s[i] == s[k]:
+			print (i)
+			break
+Index([1,4,5,6,3],-2)
+# j = n + k   (n 为总长度，k 为负索引值，j 为对应正索引值)
+
+'''
+9.要生成一个值为 8,6,4，2,0，-2，-4，-6，-8 的排列，求 range构造函数的参数。
+'''
+for i in range(8,-10,-2):
+	print (i)
+
+'''
+10.要生成一个值为 50,60,70,80 的排列，求 range构造函数的参数。
+'''
+for i in range(50,90,10):
+	print (i)
+
+#	list(range(50,90,10))
+
+#	for x in range(5,9):
+#		print (x*10,end = " ")
+# end 是 print 的关键词
+
+'''
+11.演示怎样使用Python列表解析法来产生列表【1,2,4,8,16,32,64，128，256】
+'''
+lis = [2**k for k in range(9)]
+print (lis)
+lis = list(map((lambda x: 2**x ),range(9)))
+#	学会使用 map 函数加匿名函数
+
+'''
+12.利用randrange函数（在给定范围内返回一个随机数），实现从一个非空序列返回一个随机元素。
+'''
+from random import randrange
+def choic_e(lis):
+	if lis == []:
+		print ('InputError')
+	a = randrange(len(lis))
+	print (lis[a])
+
+choic_e([1,3,5,7,9,2,4,6,8,10])
+#	import 的语句可以放到函数内
+
+'''
+C:
+13.编写一个函数的伪代码描述，该函数用来逆置 n 个整数的列表，使这些数以相反的顺序输出，并将该方法与可实现相同功能的 Python 函数进行比较。
+'''
+# 伪代码不写了，类似流程图
+# Python 函数
+
+lis = [1,3,5,7,3,9]
+li_1 = [lis[len(lis)-i-1] for i in range(len(lis))]
+print (li_1)
+
+#简化：
+#	def myreverse(data):
+#		return data[::-1]
+#	data[::],data[::-1],data[:-1] 类似于 start stop step
+
+'''
+14.编写一个 Python 函数，用来接收一个整数序列，判断其中是否存在一对乘积是奇数的互不相同的数。
+'''
+def is_different(lis):
+	for i in range(len(lis)):
+		if type(lis[i]) != int:
+			print ('ValueError')
+			break
+		for j in range(i+1,len(lis)):
+			if (lis[i]*lis[j]) % 2 != 0 and lis[i] != lis[j]:
+				print ('True')
+			else:
+				print ('False')
+is_different([1,2,4,6,8])		
+#修改：
+#	def isdifferent(data):
+		temp = []
+		for item in data:
+			if item % 2 != 0 and item not in temp:
+				temp.append(item)
+		if len(temp) >= 2:
+			return True
+		else:
+			return False
+#	若for对顺序无要求的可以不用索引
+#	也可以用set() add()；set() 用于创建一个无序不重复元素集，add() 用于给集合添加元素，若元素存在则不执行操作。
+#	return 部分也可以修改为 return (len(temp) >= 2)
+
+'''
+15.编写一个 Python 函数，用来接收一个数字序列，并判断是否所有数字都互不相同。
+'''
+def judge(a):
+	result = set()
+	for item in a:
+		if item not in result:
+			result.add(item)
+		else:
+			return False
+	return True
+
+def judg(a):
+	return (len(data) == len(set(data)))
+#	set() 函数的应用
+#	data = list(range(n)) 快速生成一个列表
+
+'''
+16.在1.5.1节scale函数实现中，scale 函数如何实现改变调用者发送的实际参数？
+
+	def scale(data,factor):
+		for j in range(len(data)):
+			data[j] *= factor				#修改的是列表（可变）
+		print (data)
+
+	为什么以下方式不对？
+		'''def scale(data,factor):
+			for val in data:				#修改的是数字（不可变）
+				val *= factor
+17.无法运行,原因：
+	如果对象是可变的，那么直接对这个对象进行操作，如列表：a.append(2);如果对象不可变，那么创建一个新的实例或副本，对副本进行操作，原本的实参不变；
+	传参是指把实参复制，之后的操作不影响实参；传引用是指用形参给实参一个别名，实际上是对形参的操作;
+	类似于传指针的方式;
+'''
+
+'''
+18.演示如何使用 Python 列表解析法产生列表 [0, 2, 6, 12, 20, 30, 42, 56, 72, 90]
+'''
+res = [k*(k-1) for k in range(1,11)]
+
+'''
+19.演示如何使用 Python 列表解析法打印 26 个英文字母。
+'''
+res = [chr(k) for k in range(ord('a'),ord('z')+1)]
+res = [chr(ord('a' + x)) for x in range(26)]
+#或者：
+res = list(map(lambda x: chr(x+ord('a')),range(26))
+
+#	ord() 将字符转换数 chr()将数转换ASCII码 unichr()将数转换为unicode
+'''
+20.将所有元素随机排序，利用 randint 函数实现。
+'''
+def shuuffle(data):
+	from random import randint
+	lis = []
+	length = len(data)
+	while length != 0:
+		index = randint(0,length-1)
+		lis.append(data[index])
+		del data[index]
+		length -= 1
+	print (lis)
+shuuffle([1,2,3,4,5,6,7,8])
+
+'''
+21.编写一个 Python 程序，反复从标准输入读取一行直到抛出 EOFerror 异常，然后以相反的顺序输出这些行。（用户可以Ctrl + D 结束输入）
+'''
+def function():
+	inputStack = []
+	while True:
+		try:
+			temp = input()
+			inputStack.append(temp)
+		except KeyboardInterrupt:
+			while len(inputStack) != 0:
+				inputStack.pop()
+
+#	pop() 用于移除列表中的一个元素（默认最后一个元素），并返回
+#	while True 保证后面出现错误后重新回到初始状态并循环
+
+'''
+22.编写一个 Python 程序，用来接收长度为 n 的两个整型数组 a 和 b 并返回 a 和 b 的点积。
+'''
+def cross(a,b):		# len(a) = len(b) = n
+	lis = [a[i]*b[i] for i in range(len(a))]  
+	print(lis)
+cross([1,3,5],[2,4,6])
+
+#或者：
+#	def cross(a,b):
+#		import numpy as np
+#		return np.array(a)*np.array(b)
+#	引用 numpy 库是最好的，毕竟专门为数据分析做的。
+
+'''
+23.编写一个索引可能越界的元素列表，若越界自动捕获异常抛出错误信息。
+'''
+a = [1,3,5,7,9]
+try:
+	for i in range(7):
+		print (a(i))
+
+except TypeError as e:
+		print ('Don\'t try buffer overflow attacks in Python')
+
+#修改：
+#	def function23 (data,i):
+#		try:
+#			return data[i]
+#		except IndexError:
+#			print('Don\'t try buffer overflow attacks in Python')
+#	具体错误就那么几个，把每个错误简单记一下。
+
+'''
+24.编写一个 Python 函数，计算字符串中元音字母的个数。
+'''
+def coun(word):
+	yuan = ['a','e','i','o','u']
+	num = 0
+	for wor in word:
+		if wor in yuan:
+			num += 1
+	print (num)
+
+coun('hello world')
+
+'''
+25.编写一个 Python 函数，接收一个句子，删除里面的标点符号。
+'''
+def delete(words):
+	new = []
+	for word in words:
+		if ord('a') < ord(word) < ord('z'):
+			new.append(word)
+	print (new)
+delete('i,love_you, shanghai')
+
+#字符串的知识，和 re 模块有关
+#	re.sub("[,。]","",str), 学习正则表达式的时候再重点看。
+
+'''
+26.编写一个程序，需要从控制台输入 3 个整数 a b c ,并确定它们是否可以在一个正确的算术公式下成立。
+'''
+#	def is_right(fun):
+#		a = input('请输入 a 的值：')
+#		b = input('请输入 b 的值：')
+#		c = input('请输入 c 的值：')
+#		if fun(a,b,c):
+#			print ('a ，b ，c 满足 fun')
+#
+
+def function():
+    temp = input("Please input three numbers!\n")
+    nums = list(temp.split(" "))
+    a = int(nums[0])
+    b = int(nums[1])
+    c = int(nums[2])
+    if (a + b == c) or (a == b - c) or ( a * b == c):
+        return True
+    else:
+        return False
+#	split(',',3) 是对字符串进行分割,如按照逗号分割 3 次
+
+'''
+27.在 1.8 节中，我们对于计算所给整数的因子时提供了 3 种不同的生成器的实现方法。 1.8 节末尾处的第三种方法是最有效的，但我们注意到，它没有按递增顺序来产生因子。修改生成器，使得其按递增顺序来产生因子，同时保持其性能优势。
+'''
+def factors(n):
+	k = 1
+	temp = []
+	while k*k <n:
+		if n % k == 0:
+			yield k
+			temp.append(n // k)
+		k += 1
+	if k *k == n:
+		yield k
+	for item in temp[::-1]:
+		yield item
+print(list(factors(100)))
+
+'''
+28.在 n 维空间中定义一个向量的 p 范数，编写 norm 函数，即 norm(v, p)，返回向量 v 的 p 范数的值， norm(v)，返回向量 v 的欧几里得范数。你可以假定 v 是一个数字列表。
+'''
+def norm(v, p=2):
+    import math
+    return math.sqrt(sum(pow(x, p) for x in v))
+#	pow(x,y) 返回 x 的 y 次方的值 
+
+'''
+P:
+29.编写一个 Python 程序，输出由字母 'c', 'a', 't', 'd', 'o', 'g'组成的所有可能的字符串（每个字母只使用一次）
+
+'''
+def function29():
+    temp = ['c', 'a', 't', 'd', 'o', 'g']
+    from itertools import permutations 
+    print(list(map(''.join, permutations(temp))))
+
+# permutations() 有顺序 combinations() 无顺序
+# permutation() 和 shuffle() 差不多
+
+'''
+30.编写一个Python程序，输入一个大于 2 的正整数，求该整数反复被 2 整除直到商小于 2 为止的次数。
+'''
+def times(input):
+	t = 0
+	while input >=2:
+		input /= 2
+		t += 1
+	print (t)
+
+times(16)
+
+'''
+31.编写一个找零钱的程序，两个输入（一个是需要支付的金额，一个是实际支付的金额），基于目前的金融体系，设计程序以找回尽可能少的纸币和硬币。
+'''
+#现金面额
+value=[1,5,10,20,50,100]
+
+#现金支付，pay为支付纸币的数量的列表；电子支付，pay可改为input输入
+#判断是否需要找零
+def pay_back(money,pay):
+	pay_value = 0
+	for i in range(len(pay)):
+		pay_value += pay[i] * value[i]
+	if pay_value < money:
+		print ('钱不够')
+	elif pay_value == money:
+		print ('钱正好够了')
+	else:
+		print ('需要找零钱%d' % (pay_value-money))
+		give(pay_value,money)
+#找零
+def give(before,after):
+	n = before - after
+	print (n)
+	yu = [0]*(len(value))
+	for i in range(1,len(value)+1):
+		print(value[-i])
+		if n >= value[-i]:
+			t = n // value[-i]
+			n -= t * value[-i]
+			yu[-i] = t
+	print (yu)
+	print ("找零钱：1元个数： %d, 5元个数： %d，10元个数：%d，20元个数：%d，50元个数：%d，100元个数：%d" % (yu[0],yu[1],yu[2],yu[3],yu[4],yu[5]))
+
+pay_back(20,[0,0,0,3])
+
+#或者简单点：
+def function31():
+    coins = {'0.5':0, '1':0, '5':0, '10':0, '20':0, '50':0, '100':0}
+    temp = input("Please input Pay and Total money: \n").split(" ")
+    pay, total = int(temp[0]), int(temp[1])
+    rest = total - pay
+    
+    coins[100] = int(rest / 100)
+    rest = int(rest % 100)
+    coins[50] = int(rest / 50)
+    rest = int(rest % 50)
+    coins[20] = int(rest / 20)
+    rest = int(rest % 20)
+    coins[10] = int(rest / 10)
+    rest = int(rest % 10)
+    coins[5] = int(rest / 5)
+    rest = int(rest % 5)
+    coins[1] = int(rest / 1)
+    rest = int(rest % 1)
+    coins[0.5] = int(rest / 0.5)
+    rest = int(rest % 0.5)
+    
+    return coins.values()
+
+'''
+32.编写一个程序模拟一个简单的计算器，使用控制台作为输入、输出的专用设备，即计算机每一次输入作一个单独的行，它可以输入一个数字（如 1034 或 12.34）或者操作符 （ 如 + 或 = ）。每一次输入后，应该输出计算器显示的结果并将其输出到 Python 控制台。
+
+33.编写一个程序模拟一个手持的计算器，程序可以控制处理来自 Python 控制台的输入。每个操作执行完毕后将内容输出到屏幕，计算器至少应该能够处理基本的算术运算和复位/清除操作。
+'''
+
+#浮点型数据未考虑，等于号没有考虑
+
+class data(object):
+	def __init__(self,value):
+		self.value = value
+
+	#判断输入是数字还是运算符
+
+	def judge(self):
+		if type(self.value) == int:
+			self.point = 1
+		else:
+			self.point = 0
+		return self.point
+	
+	#选择对应的运算
+
+	def calculate(self,other,another):
+		if self.point == 0:
+			if self.value == '+':
+				self.result = int(other.value) + int(another.value)
+			if self.value == '-':
+				self.result = int(other.value) - int(another.value)
+			if self.value == '*':
+				self.result = int(other.value) * int(another.value)
+			if self.value == '/':
+				self.result = int(other.value) / int(another.value)
+			print (self.result)	
+		else:
+			print ('没有结果')
+
+def main():
+	print ('开始计算：')
+	t = 0
+	a = [0]*3
+	value = 'open'
+	while value != ('close'):
+		value = input('请输入：')
+		print (value+'\n')
+		obj = data(value)
+		obj.judge()
+		a[t] = obj
+		t += 1
+		ob = a[1]
+		ob1=a[0]
+		ob2=a[2]
+		if t == 3:
+			ob.calculate(ob1,ob2)
+			a = [0]*3
+			t = 0
+
+if '__name__' == main():
+	main()
+
+#考虑过多了，在面向对象编程的课程部分可以再琢磨
+
+'''
+34.编写独立的　Python　程序，将句子　'I will never spam my friends again' 写一百次。程序应该对每个句子进行计数，另外有 8 次不同的随机输入错误。
+'''
+from random import randint
+str = 'I will never spam my friends again'
+strs = [str]*100
+i = 0
+while i < 8:
+	n = randint(0,100)
+	s = strs[n] 				#随机挑选 str 的第 n 个有错误
+	m = randint(0,len(str))
+	q = s[m] 					#随机挑选 s 的第 m 个字母有错误
+	l = randint(ord('a'),ord('z')+1)
+	ll = chr(l)
+	q = ll						#随机挑选 a 到 z 的其中一个字母作为错误输入
+	i += 1
+print (strs)
+
+#	理解错题目了，控制台要求输入错误
+
+def function34():
+    count = 1
+    string = "I will never spam my friends again."
+    while count < 11:
+        temp = input("Now : {} Please write phrase: \n".format(count))
+        if temp == string:
+            count += 1
+    print("Finished!")
+#	python 中 format 的应用：'{}'.format()
+
+'''
+35.设计一个 Python 程序，可以通过一系列随机生成的生日的实验来检测生日悖论。
+'''
+from random import randint
+#一年设为 365 天
+
+days = [randint(1,365) for i in range(25)]
+print (days)
+'''
+class Solution(object):
+	def containsDuplicate(self, nums):
+ 		if nums==[]:    return False
+         nums=sorted(nums)
+         i=1
+         while i<len(nums):
+             if nums[i-1]==nums[i]:
+                return True
+             i+=1
+         return False
+产生随机数，问题变为列表中是否存在重复元素：不要循环对比，先排序后相邻比较。
+与算法复杂度有关。
+'''
+#	设计程序计算了生日相同的概率，主要用的是 math 库
+def function35(num):
+    import math
+    from decimal import Decimal
+    prop = 1 - Decimal((math.factorial(365)))/Decimal((math.pow(365, num) * math.factorial(364 - num)))
+    return prop
+
+def function352(num):
+    import math
+    prop = 1 - math.pow((364/365), (num*(num-1)/2)) 
+    return prop
+
+'''
+36.编写一个 Python 程序，输入一个由空格分隔的单词列表，并输出列表中的每个单词出现的次数，不考虑效率问题。
+'''
+def function36():
+    import string
+    temp = input("Please input a string: \n").strip(string.punctuation).split(" ")
+    keys = list(set(temp))
+    result = dict(zip(keys,[0]*len(keys)))
+    for item in temp:
+        result[item] += 1
+    return result
+
+#	zip函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
+#	这里转换成一个字典思考问题，非常不错。
+
+

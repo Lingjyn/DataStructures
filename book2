@@ -1,0 +1,895 @@
+# _*_ coding: utf-8 _*_
+
+'''
+R:
+1.给出 3 个生死攸关的软件应用程序的例子。
+'''
+#医疗机器（x射线胸透，化疗等）、食品安全检测、自然或人为灾害预警（火灾。生产安全事故等）航空杭天
+'''
+2.给出一个软件应用程序的例子，其中适应性意味着产品销售和破产的生命周期的不同。
+'''
+'''
+百度		健壮性：	避免错误输入 有报错程序	当输入的网址不存在，报错'404 Error'
+		适应性：	不同版本的百度（可移植性：适用于不同平台的百度）
+		可重用性：	升级引入不同的新功能，在百度账户的基础上增加贴吧、百家号等新功能	
+'''
+
+'''
+3.描述文本编辑器 GUI 的组件和它的封装方法。
+	文本编辑器的功能：新建、打开、保存、字符串查询。源文件编译
+'''
+# 模块化：接收输入的区域、进行编辑的区域、保存的区域
+# 抽象化：定义数据类型、支持的操作和操作类型（input/move/drag/click）
+# 封装：定义编辑区、按钮、对话框
+# 封装方法 def 出现的是图形交互界面
+
+'''
+4.编写一个 Python 的类 Flower，包含一个构造函数。
+'''
+class Flower(object):
+	def __init__(self,name,number,price):	#初始化花的属性
+		self._name = name
+		self._number = number
+		self._price = price
+
+	def set(self,name,number,price):		#重新输入花的各项信息
+		self._name = name
+		self._number = number
+		self._price = price
+
+	def search(self,keywords):				#搜索花的信息
+		if keywords == 'name': print (self._name)
+		if keywords == 'number': print (self._number)
+		if keywords == 'price': print (self._price)
+
+a = Flower('flower',0,0.0)					#输入初始值，实例化
+a.set('bluebutterfly',8,12.9)				#调用方法
+a.search('name')
+a.search('price')
+a.search('number')
+
+# 设置花的属性可以分别设置,例如：
+# def search_name(self):
+# 	return self.name
+'''
+5.利用 1.7 的技术修订 CreditCard 类的 charge 和 make_payment 方法确保调用方可以将一个数字作为参数传递。
+'''
+class CreditCard:
+	def __init__(self,customer,bank,acnt,limit):
+		self._customer = customer
+		self._bank = bank
+		self._account = acnt
+		self._limit = limit
+		self._balance = 0
+
+	def get_customer(self):
+		return self._customer
+
+	def get_bank(self):
+		return self._bank
+
+	def get_account(self):
+		return self._account
+
+	def get_limit(self):
+		return self._limit
+
+	def get_balance(self):
+		return self._balance
+
+
+	def charge(self,price):
+		if price + self._balance > self._limit:
+			return False
+		else:
+			self._balance += price
+			return True
+
+	def make_payment(self,amount):
+		self._balance -= amount
+
+# 1.7 的方法是 异常处理；
+'''
+	def charge(self,price):
+		try:
+			if price + self._balance > self._limit:
+				return False
+			else:
+				self._balance += price
+				return True
+		except (TypeError, ValueError):
+			print ('Your input is wrong')
+	def make_payment(self,amount):
+		try:
+			self._balance -= amount
+		except (TypeError, ValueError):
+			print ('Your input is wrong')
+
+	或者：if not instance(amount,(int,float)):
+		raise TypeError('elements must be numeric')
+
+# 加上一堆对应的报错即可：Exception/AttributeError/EOFError/IOError/IndexError/KeyError/...
+''' 
+'''
+6.上题修改程序保证传输负数会报错。
+
+	if amount < 0:
+		raise ValueError('amount cannot be negative')
+'''	
+'''
+7.修改这个类使加入第五个参数
+'''
+
+class CreditCard:
+	def __init__(self,customer,bank,acnt,limit，inn):
+		self._customer = customer
+		self._bank = bank
+		self._account = acnt
+		self._limit = limit
+		self.inn = inn
+		self._balance = 0
+
+	def get_customer(self):
+		return self._customer
+
+	def get_bank(self):
+		return self._bank
+
+	def get_account(self):
+		return self._account
+
+	def get_limit(self):
+		return self._limit
+
+	def get_balance(self):
+		return self._balance
+
+	def charge(self,price):
+		if price + self._balance > self._limit:
+			return False
+		else:
+			self._balance += price
+			return True
+
+	def make_payment(self,amount):
+		self._balance -= amount
+'''
+8.在上述类测试中修改第一个 for 循环，使三张信用卡的其中之一超过信用额度。哪张信用卡会出现这种情况？
+'''
+
+#设计sum(1,16) > limit
+#	sum(range(1,17)) = 136
+#	2500/3 = 900
+#	for val in range(1,43):
+#	第三张会超额
+
+'''
+9.利用 Vector 类的 __sub__ 方法，使表达式 u-v 返回一个代表两个矢量间差异的新矢量实例。
+10.利用 Vector 类的 __sub__ 方法，使表达式 u-v 返回一个代表两个矢量间差异的新矢量实例。
+'''
+#主要讲运算符重载
+
+class Vector:
+	def __init__(self,d):
+		self._corrds = [0]*d
+
+	def __len__(self):
+		return len(self._coords)
+
+	def __getitem__(self,j):
+		return self._coords[j]
+
+	def __setitem__(self,j,val):
+		self._coords[j] = val
+
+	def __add__(self,other):
+		if len(self) != len(other):
+			raise ValueError('dismension must agree')
+		result = Vector(len(self))
+		for j in range(len(self)):
+			result[j] = self[j] + other[j]
+		return result
+
+	def __eq__(self,other):
+		return self._coords == other._coords
+
+	def __ne__(self,other):
+		return not self == other
+
+	def __str__(self):
+		return '<' + str(self._coords)[1:-1] + '>'
+
+#实现 __sub__ 类方法
+	
+	def __sub__(self,other):
+		if len(self) != len(other)：
+			raise ValueError('dismension must agree') 		
+		result = Vector(len(self))
+		for j in range(len(self)):
+			result[j] = self[j] - other[j]
+		return result
+
+#实现 __neg__ 方法
+
+	def __neg__ (self):
+		result = Vector(len(self))
+		for j in range(len(self)):
+			result[j] = -self[j]
+		return result
+'''
+11.上述方法支持： u = v + [1,2,3,4,5,6], 不支持 u = [1,2,3,4,5,6] + v
+'''
+#	原因：__add__(self,other) 的定义中 other只要可以 len(other) 多态性，v没有声明
+#	python 的多态性： 在不考虑实例类型的情况下使用实例（鸭子类型），u = v + [1,2,3,4,5,6] 中 self 指的是 v，u = [1,2,3,4,5,6] + v 中 v 无法确定是否可以 len（）
+#	修改： v = Vector(6) 加一句：if type(other) == list:
+
+'''
+12.实现上述的 __mul__方法；
+13.....
+14.....
+'''
+	def __mul__ (self):
+		result = Vector(len(self))
+		for j in range(len(self)):
+			result[j] = 3*self[j]
+		return result
+
+	def __sub__(self,other):
+		if len(self) != len(other)：
+			raise ValueError('dismension must agree') 		
+		for j in range(len(self)):
+			result += self[j]*other[j]
+		return result
+'''
+15.改造 Vector 的类的构造方法，若传入 d 则构造一个 d 维的 [0,...,0,0] 序列；若传入一个列表，则构造一个对应序列。
+'''
+class Vector:
+	def __init__(self,d):
+		if type(d) == int:self._coords = [0]*d
+		if type(d) == list:self._coords = d
+	def pr(self):
+		print(self._coords)
+
+a=Vector(6)
+b=Vector([1,3,5,7,9])
+a.pr()
+b.pr()
+
+'''
+16.Range 类按照如下公式(stop - start + step -1) // step ,证明这个公式。
+'''
+class Range:
+
+	def __init__(self,start,stop=None,step=1):
+		if step == 0:
+			raise ValueError('Step cannot be 0')
+		if stop is None:
+			start,stop = 0,start
+		self._length = max(0,(stop - start + step -1) // step)
+
+		self._start = start
+		self._step = step
+
+	def __len__(self):
+		return self._length
+
+	def __getitem__(self):
+		if k < 0:
+			k += len(self)
+
+		if not 0 <= k < self._length:
+			raise IndexError('index out of range')
+
+		return self._start + k *self._step
+'''
+	证明：
+		stop = start + k * step 
+		n = k + 1
+		stop - start = (n - 1) * step
+		stop - start + step = n * step
+		n = (stop - start + step) / step
+		// 是指不超过商的最大整数	
+		range 范围内的都是总数减 1
+'''
+'''
+17.从类的集合画一个继承图；
+'''
+'''
+18.找到以 2 开始且以 2 作为前两个值的斐波那契数列的第 8 个值。
+'''
+#继承
+class Progression:
+	def __init__(self,start=0):
+		self._current = start
+
+	def _advance(self):
+		self._current += 1
+
+	def __next__(self):
+		if self._current is None:
+			raise Stoplteration()
+		else:
+			answer = self._current
+			self._advance()
+			return answer
+	
+	def __iter__(self):
+		return self
+
+	def print_progression(self,n):
+		print(' '.join(str(next(self)) for j in range(n)))
+
+class FibonacciProgression(Progression):
+	def __init__(self,first = 2,second = 2):
+		super().__init__(first)
+		self._prev = second - first
+
+	def _advance(self):
+		self._prev ,self._current = self._current ,self._prev + self._current
+
+a = FibonacciProgression()
+a.print_progression(8)
+# 方法前面加__表示私有（非公有）；前后都有__的表示构造函数
+
+'''
+19.以 0 开始，增量为 128，在达到整数 2 的 63 次方或者更大的数时，我们需要执行多少次调用？
+'''
+class Progression:
+	def __init__(self,start=0):
+		self._current = start
+
+	def _advance(self):
+		self._current += 1
+
+	def __next__(self):
+		if self._current is None:
+			raise Stoplteration()
+		else:
+			answer = self._current
+			self._advance()
+			return answer
+	
+	def __iter__(self):
+		return self
+
+	def print_progression(self,n):
+		print(' '.join(str(next(self)) for j in range(n)))
+
+class ArithmeticProgression(Progression):
+	def __init__(self,increment = 128,start = 0,times = 0):
+		super().__init__(start)
+		self._increment = increment
+		self._times = times
+
+	def _advance(self):
+		self._current += self._increment
+		self._times += 1
+
+	def judge(self,num):
+		while self._current < num:
+			next(self)
+		print (self._times)
+
+a = ArithmeticProgression()
+
+a.judge(2**28)
+
+'''
+20.拥有一个非常浅的继承树会有哪些潜在的效率劣势？
+21.拥有一个非常深的继承树会有哪些潜在的效率劣势？
+'''
+浅：继承的意义不大，不够稳定
+深：父类实现改变对应的子类都需要改变，不够灵活
+涉及多重继承和单一继承的问题，多重继承容易出错，单一继承容易效率低下
+'''
+22.抽象基类：
+from abc import ABCMeta, abstractmethod
+class Sequence(metaclass = ABCMeta):
+
+	@abstractmethod
+	def __len__(self):
+
+	@abstractmethod
+	def __getitem__(self,j):
+
+	def __contains__(self,val):
+		for j in range(len(self)):
+			if self[j] == val:
+				return True
+		return False
+
+	def index(self,val):
+		for j in range(len(self)):
+			if self[j] == val:
+					return j
+			return ValueError('value not in sequence')
+
+	def count(self,val):
+		k = 0
+		for j in range(len(self)):
+			if self[j] == val:
+				k += 1
+		return k
+
+	抽象基类不提供对两个序列的比较支持，修改上述类定义，使其包括__eq__ 方法；
+'''
+'''	def __eq__(self,other):
+		if len(self) != len(other):
+			raise ValueError('The dismenssion must agree')
+		for j in range(len(self)):
+			if self[j] == other[j]:
+				return j
+			return None
+'''
+'''
+23.使用 __it__ 参数化 Sequence 类，使其支持字典比较 seq1 < seq2。
+
+def __it__(self,other):
+		if len(self) != len(other):
+			raise ValueError('The dismenssion must agree')
+		for key in self:
+			if self[key] == other[key]:
+				return key
+			return None
+'''
+'''
+C:
+24.设计一个新的电子书阅读器：
+'''
+'''
+用户使用电子书的流程：打开界面——查询想读的电子书目录——（若未购买）买书——阅读——保存书签——关闭（或者重复查找阅读流程）——关闭
+
+阅读器提供的功能：1.购买电子书 2.阅读电子书 3.查找电子书目录
+
+class user(object):
+	def __init__(self,name,pages,price):
+		self._name = name
+		self._price = price
+		self._pages = pages
+
+	def read(self,page):
+		if self._pages < page:
+			raise ValueError ('Your page is out of range')
+
+	def buy(self,money):
+		if self._price < money:
+			print ('already buy')
+			money = money - price
+			list.append(self._name)
+		else:
+			print ('not enough')
+
+	def search(self):
+		list
+# 面向书、用户两个对象思考问题
+'''
+'''
+25.Vector.__mul__实现乘法，类似于R 12 和 14
+'''
+'''
+26.设计一个反向迭代器：
+
+class SequenceIterator:
+	
+	def __init__ (self,sequence):
+		self._sequence = sequence
+		self._k = 0
+
+	def __next__(self):
+		self._k -= 1
+		if self._k >= -len(self._sequence):
+			return self._sequence[self._k]
+		else:
+			raise Stoplteration()
+
+	def __iter__ (self):
+		return self
+'''
+'''
+27.试验证明 2 in Range(10000000) 对比 99999999 in Range(10000000) 的相对速度。请提供一种__contains__ 方法更有效的实现，以确定特定的值是否属于给定的范围内。所提供的方法的运行时间应独立于范围的大小。
+'''
+import time
+t1 = time.time()
+class Range:
+	def __init__(self,start,stop = None,step = 1):
+		if step == 0:
+			raise ValueError('step cannot be 0')
+		if stop is None:
+			start , stop = 0, start
+		self._length = max(0,(stop - start + step -1)//step)
+		self._start = start
+		self._step = step
+
+	def __len__(self):
+		return self._length
+
+	def __getitem__(self,k):
+		if k < 0:
+			k += len(self)
+		if not 0 <= k <self._length:
+			raise IndexError('index out of range')
+		return self._start + k * self._step
+
+a = Range(10000000)
+if 9999999 in a:
+	print('Yes')
+t2 = time.time()
+t = t2 - t1
+print(t)
+
+t = 2.8369998931884766
+
+#	独立于范围：
+def contain(self,m):
+	if m <= self._length:
+		print ('yes')
+	else:
+		print ('no')
+
+#  不知道这样可以不....
+#  当类名全部以下划线命名时，Python 不再执行轧压.
+#  单下划线的方法也可以外部访问，最好不要。双下划线的方法严格不能访问。
+'''
+所有代码：
+class CreditCard:
+	def __init__(self,customer,bank,acnt,limit):
+		self._customer = customer
+		self._bank = bank
+		self._account = acnt
+		self._limit = limit
+		self._balance = 0
+
+	def get_customer(self):
+		return self._customer
+
+	def get_bank(self):
+		return self._bank
+
+	def get_account(self):
+		return self._account
+
+	def get_limit(self):
+		return self._limit
+
+	def get_balance(self):
+		return self._balance
+
+	# 完成购买行为
+	def charge(self,price):
+		if price + self._balance > self.limit:
+			return False
+		else:
+			self._balance += price
+
+	# 完成还钱行为
+	def make_payment(self,amount):
+		self._balance -= amount
+#继承
+	
+class PredatoryCreditCard(CreditCard):
+	def __init__(self,customer,bank,acnt,limit,apr):
+		super().__init__(customer,bank,acnt,limit)
+		self._apr = apr
+# apr 就是利息
+	
+	def charge(self,price):
+		success = super().charge(price)			#召唤父类函数
+		if not success:
+			self._balance += 5					#评估损失
+		return success
+
+	def process_month(self):
+		if self._balance > 0:
+			monthly_factor = pow(1 + self._apr,1/12)
+			self._balance *= monthly_factor
+
+28.完成 10 次呼叫，需要对其收取费用。每增加一个额外的呼叫，收取 1 美元的附加费。
+'''
+# 呼叫这里应该是翻译问题，理解为支付 10 次
+
+	def charge(self,price):
+		success = super().charge(price)			#召唤父类函数
+		if not success:
+			self._balance += 5					#评估损失
+		self._num += 1
+		return success
+
+	def extra_cost(self,money):
+		if self._num < 10:
+			self.extra = self.num * 1
+		else:
+			self.balance += money
+'''
+29.给用户分配一个每月最低付款额，作为账户的一部分，若客户在下一个月周期之前没有连续支付最低金额，则要评估延迟的费用。
+'''
+	def make_payment(self,low):
+		pay = super().make_payment(low)
+		if not pay:
+			self._balance += 100		
+'''
+30.Creditcard 类支持非公有制的方法模型__set_balance(b),修改实现公有访问。
+'''
+
+	def _set_balance(self):
+		return self._balance
+
+# 单下划线开始的成员变量叫保护变量，意思只有类对象和子类对象自己能访问；双下划线开始的是私有成员，意思是只有类对象自己能访问，子类对象也不能访问		_foo	__foo	
+# 双下划线开头和结尾的成员是 Python 里的特有标识。	__init__
+# 双下划线开始的变量 （私有变量）在代码生成之前被转换为长格式（变为公有） __foo   _A__foo
+# 利用 print '\n'.join(dir(A)) 可查看类 A 的定义
+
+'''
+P:
+33.写一个 Python 程序，如输入标准的代数多项式，则输出该多项式的一阶函数。
+'''
+class Shizi:
+	def __init__(self):
+		self._shi = input('输入您需要求导的式子：')
+		self._fu = input('输入您求导的符号：')
+		self.__daoshu()
+
+	def __daoshu(self):
+		from sympy import Symbol,diff
+		x = Symbol(self._fu)
+		print(diff(self._shi,x))
+Shizi()
+
+'''
+34.写一个 Python 程序,如输入一个文件，则输出一个柱形图表，以显示文档中每个字母出现的频率。
+'''
+# 查看文件路径时候可以调出命令行，找到对应磁盘，输入 dir C:\baidu/s 查看当前目录所有文件和文件夹
+
+class Book:
+	def __init__(self,path):
+		self._path = path
+		self.__readfile()
+		self.__search()
+		self.__draw()
+
+	def __readfile(self):
+		with open(self._path,'r+') as f:
+			self._str =f.read()
+		return self._str
+
+	def __search(self):
+		self._dic = {}
+		for item in self._str:
+			(self._dic).update({item:(dict(self._dic)).get(item,0)+1})
+		print (self._dic)
+
+	def __draw(self):
+		from matplotlib.font_manager import FontProperties
+		import matplotlib.pyplot as plt
+		import matplotlib.mlab as mlab
+		font = FontProperties(fname = r"C:\\WINDOWS\\Fonts\\simsun.ttc", size=14)
+		fig = plt.figure()
+		plt.bar((self._dic).keys(),(self._dic).values(),0.4,color='green')
+		plt.xlabel(u'字母/数字/汉字',fontproperties=font)
+		plt.ylabel(u'重复次数',fontproperties=font)
+		plt.title(u"文件中的重复次数统计",fontproperties=font)
+		plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
+		plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
+		plt.show()
+
+Book('C:/Users/paul/Desktop/tuxiang.txt')
+
+# get(key,default_value)	如果存在 key，那么返回 key 对应的值
+# setdefault(key[,default]) 如果存在 key，那么返回 key 对应的值; 不存在 key，返回 default，并增加 key：default；若 default 不存在，增加 key：None
+# 也可以这样算，主要思路都是利用字典的键唯一性
+test = 'annnnndddkrfkakfakfak'
+dic = {}
+for item in test:
+	if item not in dic:
+		dic[item] = 1
+	else:
+		dic[item] += 1
+print (dic)
+
+# 输出柱形图
+# 用来正常显示中文标签plt.rcParams['font.sans-serif']=['SimHei'] 
+# 用来正常显示负号plt.rcParams['axes.unicode_minus']=False 
+# 有疑问网上很多画图教程......
+
+'''
+35.写一组 Python 类，可以模拟网络应用程序中的一方 Alice，定期创建一组想要发给 Bob 的包。互联网不断检查是否有 Alice 想要发送的包，若有就发送到 Bob，Bob 定期检查是否收到 Alice 的包，若有将阅读并删除。
+'''
+class Alice:
+	def __init__(self):
+		self._point = 0
+
+	def create(self):
+		self._point = 1
+
+	def send(self,other):
+		if self._point == 1 and other._point == 0:
+			print ('Successful send!')
+			self._point , other._point = other._point , self._point
+		else:
+			print ('Fail send')
+
+class Bob:
+	def __init__(self):
+		self._point = 0
+	
+	def read(self):
+		if self._point == 1:
+			print('read')
+			self._point = 0		
+def main():
+	a = Alice()
+	b = Bob()
+	t = 0
+	while t < 100:
+		if t % 5 == 0:
+			a.create()
+			a.send(b)
+			b.read()
+		t += 1
+if __name__ == '__main__':
+	main()
+
+# 	定义简单了些，主要因为还没弄明白时间轴怎么模拟，先用 while 循环代替
+'''
+36.模拟生态系统，熊和鱼两个对象，熊吃鱼，鱼和鱼、熊和熊不发生变化。
+37.加入同性、异性的概念
+'''
+import random
+from random import randint
+
+class Animal:	
+	def __init__(self,time,big,local,river,point):				#演化的时间段数/坐标
+		self._big = big 					# 最大环境容纳量
+		self._time = 0						# 定义演化时间范围
+		self._end = time
+		self._river = river 				# 河流状况
+		self._point = point
+		self._local = local
+
+	def advance(self):						#一个动物的演化
+		while self._time <= self._end:
+			po = randint(0,1)				#动物移动或静止的概率
+			if po == 1:
+				self._river[self._local] -= self._point 
+				p = randint(0,1)
+				if p == 0 and (self._local) + 1 < self._big: self._local += 1			#向右移动
+				if p == 1 and self._local - 1 > 0: self._local -= 1			#向左移动
+
+			self._meet(self._river[self._local])				#移动
+			self._time += 1
+
+	def _meet(self,point):
+		if self._point < point:
+			self._point = 0 
+		else:
+			self._river[self._local] =self._point
+
+# 加入性别和力量的指标类似于传入新的列表，这里略过
+# 异性产生新的实例，简单考虑可以设一个列表保存新实例的信息；复杂考虑要包括父母的位置如何判定、环境容纳量、孩子是否立刻加入循环、孩子和父母的标示等问题....题干并没有指出
+# 由于题干给的鱼和熊的行为过于一致，继承在这里用处不大。若增加鱼的团结、熊的争斗之类多态行为，则继承可以发挥用处。
+
+def main():
+	t = 100						#演化时间
+	n =	10						#熊的数量 
+	m = 30						#鱼的数量 
+	r = 200		
+	river = [0] * r 			#初始化鱼和熊的位置，熊的位置为 2，鱼的位置为 1
+	hao = [x for x in range(1,r+1)]
+	new = random.sample(hao,n+m)
+	lis = new[:n]
+	for item in lis:
+		river[item-1] = 2
+	li = new[n+1:]
+	for j in li:
+		river[j-1] = 1
+	print (river)
+
+	ri = []						#对河流的位置与动物对应，实例化
+	for i in range(len(river)):
+		if river[i] == 2:
+			a = Animal(t,r,i,river,2)
+			a.advance()
+		elif river[i] == 1:
+			b = Animal(t,r,i,river,1)
+			b.advance()
+		else:
+			c = Animal(t,r,i,river,0)
+			c.advance()
+	#多个对象无法同时进行演变，只能假设第一个对象变化 t 时间，再第二个对象变化，依次类推...
+	print(river)
+	print('经过%d的时间后，熊的数量为 %d 只，鱼的数量为 %d 条' % (t,river.count(2),river.count(1)))
+
+if __name__ =='__main__':
+	main()
+
+# 我明白题目的本意是编写熊和鱼两个继承动物的子类，在实际编程的过程中发现由于熊和鱼的行为比较一致，写子类不是很必要。
+# 同理，若考虑性别和力量，我的思路是和位置一样的做法，传入两个填充随机数的列表对应，不仔细列出了。
+'''
+38.写一个 Python 程序，模拟一个电子书阅读器的功能系统，提供买新书、查看所购买的书的名单以及阅读所给书籍的方法。
+'''
+from random import randint
+class Book:
+	def __init__(self,name,price):
+		self._name = name
+		self._price = price
+		self._use = 0
+	def _search(self):
+		return self._name
+	
+	def _find(self):
+		return self._price
+	
+	def _isread(self):
+		return self._use
+
+	def read(self):
+		self._use = 1
+		print ('read')
+
+class User:
+	def __init__(self,name,money,list):
+		self._name = name
+		self._money = money
+		self._list = list
+
+	def _check(self):
+		return self._list 
+
+	def buy(self,bookname,price):
+		if self._money >= price:
+			self._money -= price
+			print('Successful')
+			self._list.append(bookname)
+		else:
+			print('fail')
+		return self._list
+
+def main():
+	books = ['hello','world','this','is','a','book']
+	price = [10,3,8,20,5,9]
+	base = []
+	for j in range(len(books)):
+		base.append(Book(books[j],price[j]))
+	user = User('Jack',100,[])
+	user._check()
+	i = randint(0,len(books))
+	boo = base[i]
+	pri = price[i]
+	if books[i] in user._list:
+		print ('already buy')
+	user.buy(boo,pri)
+	boo.read()
+
+if __name__ =='__main__':
+	main()
+
+'''
+39.写一个简单程序，允许用户创建各种类型的多边形，输入他们的几何尺寸，输出面积和周长。附加功能：允许用户通过指定的顶点坐标输入多边形，并能够测试两个多边形是否相似。
+'''
+import math
+class Triangle:
+    def __init__(self):
+        a=0
+        b=0
+        c=0
+    def add(self):
+            self.a=int(input("输入第1条边的长度："))
+            self.b=int(input("输入第2条边的长度："))
+            self.c=int(input("输入第3条边的长度："))
+            while (self.a+self.b<=self.c):
+                print("不符合三角边的规定，重新输入！")
+                self.a=int(input("输入第1条边的长度："))
+                self.b=int(input("输入第2条边的长度："))
+                self.c=int(input("输入第3条边的长度："))
+    def out(self):
+        print (self.a,self.b,self.c)
+    def length(self):
+        print (self.a+self.b+self.c)
+    def area(self):
+        print ((((a+b+c)/2)-a)*(((a+b+c)/2)-b)*(((a+b+c)/2)-c)*((a+b+c)/2))
+
+t=Triangle()
+t.add()
+t.out()
+t.length()
+t.area()
+# 由于基类的具体内容题干没有给出，难度不大，暂且简单写下。

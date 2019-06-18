@@ -1,0 +1,264 @@
+# _*_ coding: utf-8 _*_
+
+'''
+R:
+1.画出图形，其中 x 轴，y 轴均为对数刻度。也就是说，若函数 f(n) 的值为 y，则 x 的坐标为 log(n), y 的坐标为 log(y),其中 (x,y) 为一个点。
+'''
+# python 画图
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+n = np.linspace(1,50)
+x = [math.log(a,2) for a in n]
+m = 8*n
+q = 4*n*np.log2(n)
+p = 2*n**2
+w = n**3
+e = 2**n
+
+y1 = [np.log2(a) for a in m]
+y2 = [np.log2(a) for a in q]
+y3 = [math.log(a,2) for a in p]
+y4 = [math.log(a,2) for a in w]
+y5 = [math.log(a,2) for a in e]
+
+plt.xlabel('log(x)')
+plt.ylabel('log(y)')
+plt.plot(x,y1,color = '#007500',label = '8n')
+plt.plot(x,y2,color = '#000000',label = '4nlog2(n)')
+plt.plot(x,y3,color = '#0000FF',label = '2*n**2')
+plt.plot(x,y4,color = '#008000',label = "n**3")
+plt.plot(x,y5,color = '#B22222',label = '2**n')
+plt.legend(loc = 0,ncol =1)
+plt.grid(True)
+plt.show()
+
+'''
+2.算法 A 和 B 执行的操作个数分别为 8nlog(n) 和 2n**2，确定 n0 使得当 n >= n0, A 比 B 更优。
+3. 40n**2 		2n**3
+'''
+# 比较更优就是比谁小
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+n = np.linspace(1,50)
+x = [np.log2(a) for a in n]
+q = 8*n*np.log2(n)
+p = 2*n**2
+y2 = [np.log2(a) for a in q]
+y3 = [np.log2(a) for a in p]
+
+plt.xlabel('log(x)')
+plt.ylabel('log(y)')
+plt.plot(x,y2,color = '#000000',label = 'A: 8nlog2(n)')
+plt.plot(x,y3,color = '#0000FF',label = 'B: 2*n**2')
+plt.legend(loc = 0,ncol =1)
+plt.grid(True)
+plt.show()
+
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+n = np.linspace(1,50)
+x = [np.log2(a) for a in n]
+w = 2*n**3
+e = 40*n**2
+y4 = [math.log(a,2) for a in w]
+y5 = [math.log(a,2) for a in e]
+
+plt.xlabel('log(x)')
+plt.ylabel('log(y)')
+plt.plot(x,y4,color = '#008000',label = "2*n**3")
+plt.plot(x,y5,color = '#B22222',label = '40*n**2')
+plt.legend(loc = 0,ncol =1)
+plt.grid(True)
+plt.show()
+
+'''
+4.请给出一个示例，该函数在双对数坐标轴和标准坐标轴的图形相同。
+'''
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+x1 = np.linspace(1,50)
+x2 = [np.log2(a) for a in x1] 
+y1 = 2*x1
+y2 = [np.log2(a) for a in y1]
+
+plt.subplot(1,2,1)
+plt.xlabel('log(x)')
+plt.ylabel('log(y)')
+plt.plot(x1,y1,color = '#B22222')
+plt.grid(True)
+
+plt.subplot(1,2,2)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.plot(x2,y2,color='#000000')
+plt.grid(True)
+plt.show()
+
+'''
+5.解释：在双对数坐标轴中，斜率为 c 的函数 n**c ，为何其图形为一条直线？
+'''
+c = 3
+y1 = x1**c
+# log2（）函数把 c 降幂
+'''
+6.对于任意正整数 n ，0-2n 范围内，所有偶数的和为多少？
+'''
+def he(n):
+	x = [x for x in range(2*n) if x % 2 == 0]
+	return sum(x)
+'''
+7.算法的运行时间总为 O(f(n));	在最坏的情况下，算法的运行时间为 O(f(n))；是否等价?
+	不等价，算法的运行时间表示为所有可能的相同大小输入的平均值的函数，总为 O(f(n))的意思是所有情况下都是这样。
+
+8.排序渐近增长率对下面的函数进行排序：
+	多项式中的最高阶项决定了该多项式的渐近增长速率
+
+9--28 全部为证明题目,不写了...
+
+29.算法 A 对包含 n 个元素的序列中的每个元素都执行 O(log n) 的计算时间。算法Ａ的最坏运行时间为多少？
+O(ｎlog(n))
+
+30.给出一个包含 n 个元素的序列 S，在 S 中随机选择 log(n) 个元素，并对每个元素执行 O（n） 的计算时间，则该算法的最坏运行时间是多少？
+O(nlog(n))
+
+31.对 S 中的每个偶数执行 O（n）的计算时间，每个奇树执行 O（log n）的运算时间。该算法的最好和最坏运行时间为多少？
+O(nlog(n))  O(n**2) 
+
+32.对 S 的每个元素调用算法，对每个 S[i] 的运行时间为 O[i] ,其最坏运行时间是多少？
+0 + 1 + ... + (n-1)		O(n**2)
+
+33.O(n**2) O(nlog(n)) 比较两种算法的运行时间，当 n>=100 时，nlog(n)运行时间才更快，请解释下。
+
+nlog(n) 的渐近性肯定比 n**2 好，但是渐近性好不代表是高速的，因为 O(n) 忽视了 n 前面的系数，一般来说 nlog(n) 是高效的，O(n**2) 在 n 很小的时候也可以认为是高速的。
+
+再多的我也不清楚为什么，学习完回头再想想....
+
+34.有一个著名的城市，里面的居民有这样的习惯：只有吃到最好吃的饭才会夸赞，否则贬低它。假设饭菜均匀分布于人的一生，描述居民对饭菜满意的预期次数。
+
+实质上是一个取极大（小）值的问题。
+
+meal = random.sample(0,100) 其他的随机也可以
+t = 0
+for i in range(len(meal)):
+	if meal[i] >= meal[0]:
+		meal[0],meal[i] = meal[i],meal[0]
+		t +=1
+return t
+最坏运行时间 O(n) 最好运行时间 O(c)
+'''
+'''
+C:
+35.三集不相交问题：
+a = [.....] 	b = [......]	c = [.......]
+d = sorted(a+b+c)
+for j in range(1,len(d)):
+	if d[j] == d[j-1]:
+		return False
+return True
+O(nlog(n) + n) = O(nlog(n))
+
+36.描述一种算法：在大小为 n 的序列中找到前十个最大元素，运行时间是多少？
+sorted()
+a[:10]
+运行时间为 nlog(n)
+
+37.给出一个正函数 f(n) 的例子，满足：f(n) 的运行时间既不是 O(n) ,也不是 Omega(n)
+阶跃函数、sin(n)/cos(n)/tan(n)
+
+38--40 证明题目
+
+41.从 n 个数字找最大最小值，要求比较次数小于 3n/2 次。
+二分法， n 个数字中随机分成相等的两部分，两组之间比较 n/2 次，按大小重新分成两组。两组内部随机分成两部分比较，比较 2*(n/4) 次,依次类推，总次数 = n/2 + n/2 + n/4 + ... < 3*n/2
+
+42.Bob 开发了一个网站，把地址传给了 n 个朋友，他告诉编号为 i 的朋友最多访问 i 次。现在 Bob 有一个计时器 C 记录总访问量，C 最小为多少时使得 Bob 知道其中一个朋友的访问次数达到上限？
+friends = [1,2,3,4,5,...,n]
+均不访问 C = 0
+第 i 位朋友访问上限，sum(friends) > = C >=  i 
+不明白题目到底想问什么....
+
+43.当 n 为奇数时，对命题 3-3 给出一个类似于图 3-3b 的可视化的理由。
+sum/2 3-3b的图去除几个奇数的矩形
+
+44.题目翻译的不清楚，暂跳过...
+45. S 包含 n-1 个唯一的整数，整数范围[0,n-1],找出那个不属于 S 的数，要求时间复杂度 O(n),内存只允许开O(1).
+for item in S:
+	if item not in [0,n-1]:
+		return item
+46. 证明 羊群里的羊都是同一种颜色
+	取出的样本不符合剩余归纳得到的类和规律
+47.49. 证明题...
+48. Fibonacci 函数 是O((n+2)+(n+1)) ? 只考虑了 n-1 和 n-2，忽视了迭代性
+50. 计算 n 次多项式：p(x) = sum(a_i * x^i)  i=0-n
+
+import sympy
+a = [1,2,3,4]
+x = sympy.Symbol('x')
+x = [x**i * a[i] for i in range(len(a))]
+print(sum(x))
+print (x)
+
+递归：
+a = [1,2,3,4,5]
+x = 1  
+def fun(n):
+	if n == 4:
+		return x*a[4]
+	else: 
+		return x*(a[n] + fun(n+1))
+print(fun(0))
+
+51.证明 sum(log(i)) i=1-n 的运行时间为 O(nlog(n))
+n! < n**n
+52.证明 sum(log(i)) i=1-n 的运行时间为 Omega(nlog(n))
+不会....只能证明 sum(log(i)) i=1-n 的运行时间为 O(nlog(n))
+暂留疑问
+
+53.国王被下毒酒，设计算法测试，O(nlog(n))
+sorted() + for
+
+54。序列 S 包含 n 个整数，范围[0,4*n],允许有重复值。描述一个算法确定 S 中值为 k 的整数出现次数最多，其运行时间为多少？
+aa = [1,9,4,7,2,4,5,7,9,2,3,1,16]
+a =sorted(aa)
+b={}
+for i in a:
+	b.update({i:b.get(i,0)+1})
+print(b)
+nlog(n) + n 		O(nlog(n))
+'''
+'''
+P:
+55.对 3.3.3 节的三个算法执行实验分析，描述其运行时间，并用双对数的形式表示。
+1.2. n**2  3.n 
+'''
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+n = np.linspace(1,50)
+x = [math.log(a,2) for a in n]
+m = 2*n
+p = n**2
+y1 = [np.log2(a) for a in m]
+y2 = [np.log2(a) for a in p]
+
+plt.xlabel('log(x)')
+plt.ylabel('log(y)')
+plt.plot(x,y1,color = '#007500',label = '2n')
+plt.plot(x,y2,color = '#000000',label = 'n**2')
+plt.legend(loc = 0,ncol =1)
+plt.grid(True)
+plt.show()
+'''
+56.57.58. 执行实验分析算法的运行时间
+import time
+t1 = time.time()
+...
+t2 = time.time()
+t = t2 -t1

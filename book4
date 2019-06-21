@@ -1,0 +1,372 @@
+# _*_ coding: utf-8 _*_
+
+'''
+R:
+1.对于一个含有 n 个元素的序列 S，描述一个递归算法查找其最大值，其时间复杂度和空间度分别为多少？
+'''
+S = [1,4,2,29,2,5,15,3,4]
+def findmax(S,i):
+	if i == len(S)-1 :
+		return S[0]	
+	else:
+		if S[0] <= S[i]:
+			S[0],S[i] = S[i],S[0]
+		return findmax(S,i+1)
+print(findmax(S,0))
+
+时间复杂度：O(n) 空间复杂度: O(n)
+'''
+2.使用在代码段 4-11 中实现的传统函数，绘制出 power(2,5) 函数计算的递归追踪。
+'''
+def power(x,n):
+	if n == 0:
+		return 1
+	else:
+		return x*power(x,n-1)
+power(2,5)--x*power(2,4)--x*x*power(2,3)--x*x*X*power(2,2)--x*x*x*x*power(2,1)--x*x*x*x*x
+'''
+3.如代码段 4-12 实现的函数所示，使用重复平方算法，绘制出 power(2,18) 函数计算的递归追踪。
+'''
+def power(x,n):
+	if n == 0:
+		return 1
+	else:
+		partial = power(x,n // 2)
+		result = partial * partial
+		if n % 2 == 1:
+			result *= x
+		return result
+power(2,18)--power(2,9)--power(2,4)--power(2,2)--power(2,0)
+'''
+4.绘制函数 reverse(S,0,5) (代码段 4-10) 执行的递归追踪，其中 S = [4,3,6,2,6]
+'''
+def reverse(S,start,stop):
+	if start < stop -1 :
+		S[start],S[stop - 1] = S[stop - 1],S[start]
+		reverse(S,start+1,stop-1)
+reverse(S,0,5)--reverse(S,1,4)--reverse(S,2,3)
+S = [6,2,6,3,4]
+'''
+5.绘制函数 PuzzleSolve(3,S,U) 执行的递归追踪，其中Ｓ为空并且Ｕ＝｛ａ，ｂ，ｃ，ｄ｝。
+'''
+# 简单描述一下
+answer = [a,b]
+def PuzzleSolve(k,S,U):
+	a = 0
+	for i in range(len(U)):
+		S.append(U[i])
+		a = U[i]
+		del U[i]
+		if k == 1:
+			if S in answer: print(S)
+		else:
+			PuzzleSolve(k-1,S,U)
+		del S[-1]
+		U.insert(i,a)
+流程图 4-14
+'''
+６.描述一个递归函数，用于计算第ｎ个调和数。
+'''
+def tiao(n):
+	if n == 1:
+		return 1
+	else:
+		return 1/n+tiao(n-1)
+'''
+７.描述一个递归函数，它可以把一串数字转换成对应的整数。
+'''
+def shu(n,a):
+	global li
+	lis = '1234567890'
+	if n < 0:
+		return 
+	else:
+		if a[n] in lis:
+			li += a[n]
+		return shu(n-1,a)
+a='1,4,5*43%1..2'
+li = ' '
+shu(len(a)-1,a)
+print(int(li))
+
+lis = '1234567890'
+a='1,4,5*43%1..2'
+for i in a:
+	if i in lis:
+		print(i)
+'''
+８.Isabel 用一种有趣的方法来计算一个含有 n 个整数的序列 A 中的所有元素之和，其中 n 是 2 的幂。
+'''
+def Isabel(S):
+	if len(S) == 1:
+		return S[0]
+	else:
+		S[i] = S[2*i]+S[2*i+1]
+		del S[len(S)/2 :]
+		return Isabel(S)
+时间复杂度： o(n)
+'''
+C:
+9. 写一个简短的递归 Python 函数，用于在不使用任何循环的条件下查找一个序列中的最小值和最大值。
+'''
+def findm(s,n):
+	global tmin,tmax
+	if n < 0:
+		return tmin,tmax
+	else:
+		if s[n] > tmax:
+			tmax = s[n]
+		if s[n] < tmin:
+			tmin = s[n]
+		return findm(s,n-1)
+s = [1,3,5,2,6,9,2]
+tmin = tmax = s[0]
+print(findm(s,len(s)-1))
+'''
+10.在只用加法和整数除法的情况下，描述一个递归算法，来计算以 2 为底的 n 的对数的整数部分。
+'''
+def cal(n):
+	import numpy as np
+	if n == 2:
+		return 1
+	else: 
+		return 1 + cal(n // 2)
+'''
+11.描述一个有效的递归函数来求解元素的唯一性问题，在不使用排序的最坏的情况下运行时间最多是 O(n**2)
+'''
+def unique(S,n):
+	if n == len(S):
+		return 
+	else:
+		for i in range(n):
+			if S[i] == S[n]:
+				return False
+			else:
+				return True
+		return unique(S, n+1)
+'''
+12.在只使用加法和减法的情况下，描述一个递归算法，来计算两个正整数 m 和 n 的乘积。
+'''
+def cal(m,n):
+	if n == 1:
+		return m
+	else:
+		return m + cal(m,n-1)
+print(cal(3,9))
+
+'''
+13.绘制英式标尺：
+	def draw(length,lab = ' '):
+		line = '-' * length
+		if lab:
+			line += ' ' + lab
+		print (line)
+
+	def draw_interval(center_length):
+		if center_length > 0:
+			draw_interval(center_length - 1)
+			draw(center_length)
+			draw_interval(center_length + 1)
+	def draw_ruler(num_inches,major_length):
+		draw(major_length,'0')
+		for j in range(1,1+num_inches):
+			draw_interval(major_length -1)
+			draw(major_length,str(j))
+归纳法证明打印的函数短线数量...
+
+14.汉诺塔问题
+n个盘子和3根柱子：A(源)、B(备用)、C(目的)，盘子的大小不同且中间有一孔，可以将盘子“串”在柱子上，每个盘子只能放在比它大的盘子上面。起初，所有盘子在A柱上，问题是将盘子一个一个地从A柱子移动到C柱子。移动过程中，可以使用B柱，但盘子也只能放在比它大的盘子上面。
+汉诺塔问题的以下几个限制条件：
+1.在小圆盘上不能放大圆盘。
+2.在三根柱子之间一回只能移动一个圆盘。
+3.只能移动在最顶端的圆盘。
+当n = 1的时候，即此时只有一个盘子，那么直接将其移动至C即可。移动过程就是 A -> C
+当n = 2的时候，这时候有两个盘子，那么在一开始移动的时候，我们需要借助B柱作为过渡的柱子，即将A柱最上面的那个小圆盘移至B柱，然后将A柱底下的圆盘移至C柱，最后将B柱的圆盘移至C柱即可。那么完整移动过程就是A -> B , A -> C , B -> C
+当n = 3的时候，那么此时从上到下依次摆放着从小到大的三个圆盘，根据题目的限制条件：在小圆盘上不能放大圆盘，而且把圆盘从A柱移至C柱后，C柱圆盘的摆放情况和刚开始A柱的是一模一样的。所以呢，我们每次移至C柱的圆盘（移至C柱后不再移到其他柱子上去），必须是从大到小的，即一开始的时候，我们应该想办法把最大的圆盘移至C柱，然后再想办法将第二大的圆盘移至C柱......然后重复这样的过程，直到所有的圆盘都按照原来A柱摆放的样子移动到了C柱。从问题入手，要将最大的盘子移至C柱，那么必然要先搬掉A柱上面的n-1个盘子，而C柱一开始的时候是作为目标柱的，所以我们可以用B柱作为"暂存"这n-1个盘子的过渡柱，当把这n-1的盘子移至B柱后，我们就可以把A柱最底下的盘子移至C柱了。现在各个柱子上盘子的情况，A柱上无盘子，而B柱从上到下依次摆放着从小到大的n-1个盘子，C柱上摆放着最大的那个盘子。那就是要把B柱这剩下的n-1个盘子移至C柱，而B柱作为过渡柱，那么我们需要借助A柱，将A柱作为新的"过渡"柱，将这n-1个盘子移至C柱。
+'''
+def move(n,a,b,c):
+	if n == 1:
+		print(a,'--',c)
+	else:
+		move(n-1,a,c,b)
+		move(1,a,b,c)
+		move(n-1,b,c,a)
+move(3,'a','b','c')
+'''
+15.编写一个递归函数，该函数将输出一个含有 n 个元素的集合的所有子集（没有任何重复的子集）
+'''
+def PowerSetsRecursive(items):
+  	if len(items) == 0:
+  		return [[]]
+  	subsets = []
+  	first_elt = items[0]
+  	rest_list = items[1:]
+  	for partial_sebset in PowerSetsRecursive(rest_list):
+    	subsets.append(partial_sebset)
+    	next_subset = partial_sebset[:] +[first_elt]
+    	subsets.append(next_subset)
+  	return subsets
+# 和汉诺塔问题一样，不必考虑具体怎么把集合解释出来，只要能够将问题分解。
+items = [1,3,5,7]
+print(PowerSetsRecursive(items))
+
+def PowerSetsRecursive2(items):
+	result = [[]]
+	for x in items:
+    	result.extend([subset + [x] for subset in result])
+  	return result
+'''
+16.编写一个递归函数，它接收一个字符串 s 并且输出其逆置字符串。
+'''
+def nixu(S,start,stop):
+	if start >= stop:
+		return S
+	else:
+		S[start],S[stop-1] = S[stop-1],S[start]
+		return nixu(S,start +1,stop -1)
+st = 'hello'
+S = [x for x in st]
+nixu(S,0,len(S))
+print(S)
+'''
+17.编写一个简单的递归函数，确定一个字符串 s 是否是它的一个回文字符串，也就是说，该字符串与其逆置字符串相同。
+'''
+def nixu(S,start,stop):
+	if start >= stop:
+		return S
+	else:
+		S[start],S[stop-1] = S[stop-1],S[start]
+		return nixu(S,start +1,stop -1)
+st = 'hello'
+S = list(st)
+F = S
+nixu(S,0,len(S))
+print(S)
+if F == S:
+	print ('same')
+else:
+	print('different')
+'''
+18.使用一个递归函数，确定字符串 s 中是否元音字母比辅音字母多。
+'''
+def judge(s,n):
+	global dic
+	lis = 'aeiou'
+	if n < 0:
+		return dic
+	else:
+		if s[n] in lis:
+			dic += 1
+		return judge(s,n-1) 
+s =list('asfge')
+dic = 0
+judge(s,len(s)-1)
+print(dic)
+'''
+19.编写一个递归函数，重新排序，使得序列的偶数值全部放在奇数前面。
+'''
+def paixu(S,n):
+	if n < 0:
+		return S
+	else:
+		if S[n] % 2 != 0:
+			a = S[n]
+			del S[n]
+			S.append(a) 
+		return paixu(S,n-1)
+S = [13,19,17,5,21,8,17,10,32]
+print(paixu(S,len(S)-1))
+'''
+20.给定一个未排序的整数数列 S 和整数 k,描述一个递归算法，用于对 S 中的元素重新排序，使得所有小于等于 k 的元素在大于 k 的元素之前。在这个含有 n 个值的序列中，算法的时间复杂度是多少？
+'''
+def paixu(S,n):
+	if n < 0:
+		return S
+	else:
+		if S[n] > 12:
+			a = S[n]
+			del S[n]
+			S.append(a) 
+		return paixu(S,n-1)
+S = [13,19,17,5,21,8,17,10,32]
+print(paixu(S,len(S)-1))
+时间复杂度 O(n) 调用 n 次，每次执行固定步骤
+'''
+21.假设给出一个含有 n 个元素的序列 S，这个序列是包含不同元素的升序序列。给定一个数 k ，描述一个递归算法找到 S 中总和为 k 的两个整数（若存在），其时间复杂度是多少？
+'''
+S = [1,9,7,5,21,3,8,10,2]
+def search(S,n):
+	if n == len(S):
+		return 
+	else:
+		for i in range(n,len(S)):
+			if S[n] + S[i] == 10:
+				print(n,i)
+		return search(S,n+1)
+search(S,0)
+时间复杂度 O(n**2)
+'''
+22.从代码 4-12 使用重复平方的 power 函数的版本中，实现一个非递归实例。
+'''
+def power(x,n):
+	result = 1
+	for i in range(n):
+		result *= x**i
+	return result
+print(power(2,3))
+
+'''
+P:
+23.实现一个具有特征值的find(path,filename),该特征值报告在具有指定路径的指定文件名为根的文件系统的所有条目。
+'''
+def find(path):
+	import os
+	total = os.path.getsize(path)
+	if os.path.isdir(path):
+		for filename in os.listdir(path):
+			childpath = os.path.join(path,filename)
+			total += find(chidpath) 
+	print ('{0:<7}'.format(total),path)
+	return total
+
+def find(path,filename):
+	import os
+	childpath = os.path.join(path,filename)
+	total = os.path.getsize(childpath)
+	for filenames in os.listdir(childpath):
+		total += find(chidpath,filenames)  
+	print ('{0:<7}'.format(total),path)
+	return total
+'''
+24.编写一个程序，通过测试和列举所有可能配置来解决求和问题。
+'''
+U = {'a','b','c'}
+def PuzzleSolve(k,S,U):
+	for i in U:
+		S.add(i)
+		U.remove(i)
+		if k < 1:
+			if 'a' in S and 'c' in S:
+				return (S)
+		else:
+			return PuzzleSolve(k-1,S,U)	
+		U.add(i)
+print(PuzzleSolve(len(U)-1,set(),U))
+'''
+25.对英式标尺工程实现一个非递归的实现。
+'''
+def draw_line(length,num,tick = ' '):
+	line = '-'*length
+	line += ' ' + tick + str(num) +'\n'
+	return line
+for n in range(13):
+	if n % 4 == 0:
+		print(draw_line(3,n//4))
+# 题目表述混乱...
+# 个人感觉递归在 n 和 n-1 的关系较大时比较实用，例如数列、找文件路径等。排序找列表极大极小感觉用处不大...
+'''
+26.汉诺塔问题
+27. Python 的 os 模块提供 walk(path) 函数，实现这样的函数。
+'''
+	[path,os.listdir(path)]	
+# os 模块，学习树后再研究下...

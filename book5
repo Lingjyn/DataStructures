@@ -1,0 +1,305 @@
+# _*_ coding: utf-8 _*_
+
+'''
+R:
+1.运行 5-1 的实验，与 5-2 的结果进行比较。
+'''
+import sys
+data = []
+n = 100
+for k in range(n):
+	a = len(data)
+	b = sys.getsizeof(data)
+	print('Length: {0:3d}; Size in bytes: {1:4d}'.format(a,b))
+	data.append(None)
+'''
+2.修改上述代码，当且仅当目前存储被耗尽，输出 length 值。
+'''
+import sys
+data = []
+n = 100
+for k in range(n):
+	a = len(data)
+	b = sys.getsizeof(data)
+	if a*8 + 64 == b:
+		print('Length: {0:3d}; Size in bytes: {1:4d}'.format(a,b))
+	data.append(None)
+'''
+3.利用上述代码，证明元素从列表中被取出时，列表偶尔会收缩。
+'''
+import sys
+n =[x for x in range(20)]
+for k in range(20):
+	a = len(n)
+	b = sys.getsizeof(n)
+	print('Length: {0:3d}; Size in bytes: {1:4d}'.format(a,b))
+	n.pop()
+'''
+4.修改__getitem__(self,k) 使其可以接收 k 为负值的索引。
+'''
+def __getitem__(self,k):
+	if 0< =k < self._n:
+		return self._A[k]
+	else:
+		k = self._n + k
+		return self._A[k]
+'''
+5.假设数组大小从 k 扩大到 2k 需要 3k 个网络硬币，则在摊销过程中每次增添操作应收费多少？
+
+每次摊销过程，对每个增添操作索取 3 个网络硬币，增添 k 个元素需要支付 3k 个硬币，这其中 k 个硬币用于增添（初始化），剩余的 2k 个存储起来用于下一次数组扩充。、
+可以换个角度，假设向数组每次添加一个元素，都会引起数组的容量的扩充。每一次增添索取 3 个硬币，填充 n 个元素，数组改变 n 次，即 3n 个硬币来支付 n 次操作，每次操作运行时间为 O(1),总体为 O(n)
+摊销的思路是把增添元素的过程整体考虑，即包括数组容量改变和不变的两种情况，或者可以理解为平均。
+
+6.修改 insert 方法，使得避免元素的循环。
+''' 
+def insert(self,k,value):
+	if k >self._n:
+		self._n += 1
+		return 
+	if self._n == self._capacity:
+		self._resize(2*self._capacity)
+	value2 = self._A[k]
+	self._A[k] = value
+	return insert(self,k+1,value2)
+'''
+7.设 A 为数组，其大小为 n >= 2,包含 1--n-1 的整数，其中恰有一个整数重复，描述一个快速算法，找到 A 中的这个重复的整数。 
+'''
+a = sorted(A)
+for j in range(1,len(A)):
+	if A[j] == A[j-1]:
+		return A[j],j
+'''
+8. list.pop() 的效率
+pop(0) 效率最低 pop() 效率最高
+计算程序运行的平均时间.....不清楚怎么算，还是用time.time()?
+
+9.10. 解释凯撒密码。
+将需要加密的字母加上任意的轮转值，除英语之外的语言也可以，Unicode码或者自己编号也可以。
+
+11.使用标准的控制结构计算 n*n 数据集中所有编号的和，该数据集用列表的列表来表示。
+'''
+data = [[x for x in range(10)] for i in range(10)]
+s = 0
+for i in range(10):
+	for j in range(10):
+		s += data[i][j]
+print(s)
+'''
+12.如何用 sum() 计算 n*n 数据集中所有编号的和?
+'''
+data = [[x for x in range(10)] for i in range(10)]
+s = 0
+for i in range(10):
+	s += sum(data[i])
+print(s)
+'''
+C:
+13.当数组以非空长度被初始化，当底层数组扩大时，会影响值的序列吗？
+会影响值，但是同序列值的差不变。
+
+14.描述一个函数实现 random.shuffle()
+'''
+import random
+lis = [1,3,5,7,9]
+a = random.sample(lis,len(lis))
+print(a)
+
+import random
+lis =[1,3,5,7,9]
+d = []
+n=0
+while n < len(lis):
+	a = random.randrange(len(lis))
+	if a not in d:
+		d.append(a)
+		n += 1
+li = [lis[i] for i in d]
+print(li)
+'''
+15.思考动态数组的扩充问题，若不扩充为原来数组的 2 倍，而是 5/4 倍，这种情况下摊销还是 O(n)?
+是的，初始化需要 n/4 个硬币，只要数组最后几个元素存的硬币刚好可以支付即可，即可以修改对每次增添索要的货币。
+
+16.实现 5-3 的 pop() 方法。
+'''
+def pop(self):
+	if self._n < self._capacity/4:
+		self._resize(self._capacity/2)
+	self._A[self._n] = None
+	self._n -= 1
+'''
+17. n 次 append --O(n) n 次 pop() --O(n)
+18. 证明题 pop() append() 个人感觉可以理解为 对 list 的元素末端的赋值不同而已
+19. 20.等差数列扩充数组 Omega(n**2)
+21. 测试不同方法的算法运行时间：重复连接，增加一张临时列表再合并，使用join的列表推导式，使用join的生成器理解法
+'''
+import time
+start = time.perf_counter()
+a = 'a'
+b = a+a
+print(b)
+end1 = time.perf_counter()
+
+c = []
+c.append(a)
+c.append(b)
+print(c)
+end2 = time.perf_counter()
+
+d = ['a','b']
+print(' '.join(e) for e in d)
+end3 = time.perf_counter()
+
+h = 'a'
+g = 'b'
+print(h.join(g))
+end4 = time.perf_counter()
+
+print(end1 - start)
+print(end2 - end1)
+print(end3 - end2)
+print(end4 - end3)
+'''
+22. 比较 list 的 append 和 extend 的效率。
+	extend() 应该更高效，还不清楚怎么计算运行时间.... time() 显示不了太小的时间差
+	应该用 time.clock() 或者 time.perf_counter() 
+	time() 显示的是现实世界的时间，clock() 显示的是 cpu 时钟。
+23. 比较 append 和 列表表达式的效率。
+24. 比较 remove 和 insert 的效率。
+25. data.remove(value) 只能移除第一个 value 的元素，实现一个 remove_all ,要求删除所有列表中的 value 的值。
+'''
+def remove_all(data,value):
+	while value in data:
+		data.remove(value)
+	return data
+'''
+26.设 B 为数组，大小包含 1-n-5 的整数，恰有 5 个重复的元素。给出一个不错的算法，找出 B 中的这 5 个重复的整数。
+'''
+a = sorted(B)
+for j in range(1,len(B)):
+	if B[j-1] = B[j]:
+		return B[j],j
+'''
+27.给出 Python 的 L 列表，该列表包含 n 个正整数，每个正整数用 k = 【log n】 （向上取整）+ 1 位表示，给出一种运行时间为O(n) 的方法，该方法发现 k 位的整数不在 L 中。
+28.
+???? 这说的是个啥？？
+
+29.在数据库中，一个实用的操作为自然连接，假如把数据库看做一张列表，该列表拥有许多有序的成对的对象，比如（x，y）属于数据库 A，（y,z）属于数据库 B，则 A 和 B 的自然连接即为所有有序三元组（x,y,z）所组成的列表。描述分析一种高效的算法，能够对两张表进行自然连接。
+'''
+SELECT A.x ,B.z FROM A JOIN WITH B WHERE A.y = B.y
+
+A = [(1,3),(2,4),(5,8)]
+B = [(1,6),(3,3),(4,1)]
+
+def natural_join(A,B):
+	h =[(a,b,d) for (a,b) in A for (c,d) in B if b==c]
+	print(h)
+natural_join(A,B)
+'''
+30.互联网通信 为 Alice 描述一种算法按序重组 n 个数据包。
+'''
+import random,time
+t1 =time.clock()
+s = [x for x in range(1,21)]
+random.shuffle(s)
+print(s)
+def paixu(S):
+	return sorted(S)
+print(paixu(s))
+t2 = time.clock()
+print(t2-t1)
+'''
+31.给出一种方法，在 n*n 数据集中，使用递归增加所有数，该数据集以列表的形式来表示。
+'''
+data = [[x for x in range(4)] for i in range(5)]
+print(data)
+def fill(data,i,j):
+	if i >= len(data):
+		return fill(data,0,j+1)
+	elif j >= len(data[0]):
+		return data
+	else:
+		data[i][j] += 1
+		return fill(data,i+1,j) 
+print(fill(data,0,0))
+'''
+P:
+32.用 Python 编写一个函数，该函数给出 2 个三维数值型数据集，并以离散方式将他们相加。
+'''
+data = [[[x for x in range(4)] for i in range(5)] for j in range(5)]
+print(data)
+def fill(data,i,j,k):
+	if i >= len(data):
+		return fill(data,0,j+1,k)
+	elif j >= len(data[0]):
+		return fill(data,0,0,k+1)
+	elif k >= 4:
+		return data
+	else:
+		data[i][j][k] += 1
+		return fill(data,i+1,j,k) 
+print(fill(data,0,0,0))
+'''
+33.编写一个程序，能够增加和乘以二维数值型数组，假设维数适应于此操作。
+'''
+data = [[x for x in range(4)] for i in range(5)]
+data1 = [[2*x for x in range(4)] for i in range(5)]
+print(data)
+print(data1)
+def fill(data,i,j):
+	if i >= len(data):
+		return fill(data,0,j+1)
+	elif j >= len(data[0]):
+		return data
+	else:
+		data[i][j] += data1[i][j]
+		return fill(data,i+1,j) 
+print(fill(data,0,0))
+
+data = [[x for x in range(5)] for i in range(5)]
+data1 = [[2*x for x in range(5)] for i in range(5)]
+print(data)
+print(data1)
+def fill(data,i,j):
+	if i >= len(data):
+		return fill(data,0,j+1)
+	elif j >= len(data[0]):
+		return data
+	else:
+		data[i][j] *= data1[j][i]
+		return fill(data,i+1,j) 
+print(fill(data,0,0))
+'''
+34.为英语情报执行凯撒加密算法编写程序，考虑大小写字符。
+'''
+class CaserCipher:
+	def __init__(self,shift):
+		encoder = [None]*26
+		decoder = [None]*26
+		for k in range(26):
+			encode[k] = chr((k + shift) % 26 + ord('A'))
+			decoder[k] = chr((k + shift) % 26 + ord('A'))
+		self._forward = ' '.join(encoder)
+		self._backward = ' '.join(decoder)
+	def encrypt(self,message):
+		return self._transform(message,self._forward)
+	def decrypt(self,secret):
+		return self._transform(secret,self._backward)
+	
+	def _transform(self,original,code):
+		msg = list(original)
+		for k in range(len(msg)):
+			if msg[k].isupper():
+				j = ord(msg[k]) - ord('A')
+				msg[k] = code[j]
+			if msg[k].islower():
+				j = ord(msg[k]) - ord('A') + 32
+				msg[k] = code[j]
+			return ' '.join(msg)
+'''
+35.36.37.继承 CaserCipher 类，改用随机序列的字母作为 encode
+'''
+s = [x for x in range(26)]
+random.shuffle(s)
+for k in range(26):
+	encode[k] = chr(s[k] + ord('A'))
+	decoder[k] = chr(s[k] + ord('A'))
